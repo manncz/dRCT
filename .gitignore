@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+
+# large files
+*.pdf
+*.Rdata
+*.jpg
+*.jpeg
+*.html
