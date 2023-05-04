@@ -4,15 +4,19 @@
 \alias{p_rf_interp}
 \title{Random Forest Imputation of Potential Outcomes in Paired Experiments}
 \usage{
-p_rf_interp(assigned, reparam = TRUE)
+p_rf_interp(ordered, assigned, n_assigned, reparm = TRUE)
 }
 \arguments{
+\item{ordered}{A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.}
+
 \item{assigned}{A matrix of pair experimental data that his been processed by the \code{pair} function.}
 
-\item{reparam}{If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate when treating the pairs as units.}
+\item{n_assigned}{A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.}
+
+\item{reparm}{If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate.}
 }
 \description{
 This function is used to impute potential outcomes for the \code{p_loop} function. 
 Leaves out each pair and imputes its potential outcomes using random forests
-on the remaining pairs. This function interpolates between the \code{p_rf_ab} and \code{p_rf_s} methods.
+on the remaining pairs. This function interpolates between the \code{p_rf_v12} and \code{p_rf_po} methods.
 }

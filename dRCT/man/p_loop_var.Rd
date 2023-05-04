@@ -4,14 +4,16 @@
 \alias{p_loop_var}
 \title{Variance Estimate for the P-LOOP Estimator}
 \usage{
-p_loop_var(assigned, a, b)
+p_loop_var(assigned, v1, v2, n_assigned)
 }
 \arguments{
-\item{assigned}{A matrix of pair experimental data that his been processed by the \code{pair} function}
+\item{assigned}{A matrix of pair experimental data that has been processed by the \code{pair} function}
 
-\item{a}{A vector of the treatment minus control differences for the pairs where the first unit is assigned to treatment.}
+\item{v1}{A vector of the predicted treatment minus control differences for the pairs where the first unit is assigned to treatment.}
 
-\item{b}{A vector of the treatment minus control differences for the pairs where the second unit is assigned to treatment.
+\item{v2}{A vector of the predicted treatment minus control differences for the pairs where the second unit is assigned to treatment.}
+
+\item{n_assigned}{A matrix of cluster sizes that has been processed by the \code{pair} function
 #' @export}
 }
 \description{

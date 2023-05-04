@@ -4,7 +4,7 @@
 \alias{pair}
 \title{Format Data into Pairs}
 \usage{
-pair(Y, Tr, Z, P)
+pair(Y, Tr, Z, P, n)
 }
 \arguments{
 \item{Y}{A vector of experimental outcomes.}
@@ -14,8 +14,10 @@ pair(Y, Tr, Z, P)
 \item{Z}{A matrix or vector of covariates.}
 
 \item{P}{A vector encoding the pair assignments. Observations with the same value of \code{P} will be assumed to be in the same pair.}
+
+\item{n}{A vector encoding the cluster sizes.}
 }
 \description{
-This function takes data at the individual level and returns a data frame with one pair per row. Each row includes the pair label,
-the observed outcomes, the treatment assignment for the first individual in the pair, and the covariates for each individual.
+This function takes data at the unit level and returns a data frame with one pair per row. It also orients the data so
+the treated unit is labeled as unit "1" in each row. Each row includes the pair label, the observed outcomes, and the covariates for each unit.
 }

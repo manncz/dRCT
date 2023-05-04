@@ -11,5 +11,5 @@ reparam(assigned)
 }
 \description{
 This function takes a data frame that has been processed by the \code{pair} function and formats it such that 
-covariates are parameterized as the within pair differences and means for each covariate.
+covariates are parameterized as the within pair differences (treatment - control) and means for each covariate.
 }

@@ -4,18 +4,18 @@
 \alias{p_interp}
 \title{Interpolates between Sets of Potential Differences in Paired Experiments}
 \usage{
-p_interp(Tr, a, b, ab1, ab2)
+p_interp(Tr, v1, v2, v12a, v12b)
 }
 \arguments{
 \item{Tr}{The treatment assignment vector for the pairs, where the value is 1 if the first unit in the pair is assigned to treatment and 0 otherwise.}
 
-\item{a}{A vector of the treatment minus control differences for the pairs where the first unit is assigned to treatment.}
+\item{v1}{A vector of the treatment minus control differences for the pairs where the first unit is assigned to treatment.}
 
-\item{b}{A vector of the treatment minus control differences for the pairs where the second unit is assigned to treatment.}
+\item{v2}{A vector of the treatment minus control differences for the pairs where the second unit is assigned to treatment.}
 
-\item{ab1}{A matrix with 2 columns. The first column contains a set of imputed differences had the first unit in each pair been treated.  The first column contains a set of imputed differences had the second unit in each pair been treated.}
+\item{v12a}{A matrix with 2 columns. The first column contains a set of imputed differences had the first unit in each pair been treated.  The first column contains a set of imputed differences had the second unit in each pair been treated.}
 
-\item{ab2}{A second set of imputed potential differences.}
+\item{v12b}{A second set of imputed potential differences.}
 }
 \description{
 This function is used within the \code{p_rf_interp} and \code{p_ols_interp} imputation methods for the \code{p_loop} function. 
