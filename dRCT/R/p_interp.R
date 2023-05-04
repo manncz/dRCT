@@ -6,37 +6,49 @@
 #' is done using leave-one-out cross validation.
 #' 
 #' @param Tr The treatment assignment vector for the pairs, where the value is 1 if the first unit in the pair is assigned to treatment and 0 otherwise.
-#' @param a A vector of the treatment minus control differences for the pairs where the first unit is assigned to treatment.
-#' @param b A vector of the treatment minus control differences for the pairs where the second unit is assigned to treatment.
-#' @param ab1 A matrix with 2 columns. The first column contains a set of imputed differences had the first unit in each pair been treated.  The first column contains a set of imputed differences had the second unit in each pair been treated.
-#' @param ab2 A second set of imputed potential differences.
+#' @param v1 A vector of the treatment minus control differences for the pairs where the first unit is assigned to treatment.
+#' @param v2 A vector of the treatment minus control differences for the pairs where the second unit is assigned to treatment.
+#' @param v12a A matrix with 2 columns. The first column contains a set of imputed differences had the first unit in each pair been treated.  The first column contains a set of imputed differences had the second unit in each pair been treated.
+#' @param v12b A second set of imputed potential differences.
 #' @export
 
-p_interp = function(Tr,a,b,ab1,ab2){
-  a1 = ab1[,1]
-  a2 = ab2[,1]
-  b1 = ab1[,2]
-  b2 = ab2[,2]
+p_interp = function(Tr,v1,v2,v12a,v12b){
   
-  nsuma = sum((a-a2[Tr == 1])*(a1[Tr == 1]-a2[Tr == 1]))
-  dsuma = sum((a1[Tr == 1]-a2[Tr == 1])^2)
-  nsumb = sum((b-b2[Tr == 0])*(b1[Tr == 0]-b2[Tr == 0]))
-  dsumb = sum((b1[Tr == 0]-b2[Tr == 0])^2)
+  #two imputation methods (a and b) for v1
+  v1a = v12a[,1][Tr == 1]
+  v1b = v12b[,1][Tr == 1]
   
-  numa = denoma = rep(0,length(a1))
-  numb = denomb = rep(0,length(b1))
-  numa[Tr == 1] = (a-a2[Tr == 1])*(a1[Tr == 1] - a2[Tr == 1])
-  denoma[Tr == 1] = (a1[Tr == 1] - a2[Tr == 1])^2
-  numb[Tr == 0] = (b-b2[Tr == 0])*(b1[Tr == 0] - b2[Tr == 0])
-  denomb[Tr == 0] = (b1[Tr == 0] - b2[Tr == 0])^2
+  #two imputation methods (a and b) for v2
+  v2a = v12a[,2][Tr == 0]
+  v2b = v12b[,2][Tr == 0]
   
-  alpha_a = (nsuma - numa)/(dsuma - denoma)
-  alpha_b = (nsumb - numb)/(dsumb - denomb)
-  alpha_ab = cbind(alpha_a,alpha_b)
   
-  alpha_ab = ifelse(alpha_ab < 0,0,ifelse(alpha_ab > 1, 1, alpha_ab))
-  ab = ab1*alpha_ab + ab2*(1-alpha_ab)
-  out = list(ab,alpha_ab)
+  #find the value for the numerator and denominator for each pair
+  #there is no observed v2 for Tr == 0, so set to 0 and vs. versa
+  num_v1 = num_v2 = denom_v1 = denom_v2 = rep(0,length(Tr))
+  
+  num_v1[Tr == 1] = (v1-v1b)*(v1a-v1b)
+  denom_v1[Tr == 1] = (v1a-v1b)^2
+  num_v2[Tr == 0] = (v2-v2b)*(v2a-v2b)
+  denom_v2[Tr == 0] = (v2a-v2b)^2
+  
+  #sum over all units
+  nsum_v1 = sum(num_v1)
+  dsum_v1 = sum(denom_v1)
+  nsum_v2 = sum(num_v2)
+  dsum_v2 = sum(denom_v2)
+  
+  #calculate alpha for v1 and v2
+  alpha_v1 = (nsum_v1 - num_v1)/(dsum_v1 - denom_v1)
+  alpha_v2 = (nsum_v2 - num_v2)/(dsum_v2 - denom_v2)
+  alpha_v12 = cbind(alpha_v1,alpha_v2)
+  
+  #restrinct to the interval [0,1]
+  alpha_v12 = ifelse(alpha_v12 < 0,0,ifelse(alpha_v12 > 1, 1, alpha_v12))
+  
+  #take weighted average of two interpolations
+  v12 = v12a*alpha_v12 + v12b*(1-alpha_v12)
+  out = list(v12=data.frame(v12), alpha =alpha_v12)
+  
   return(out)
 }
-
