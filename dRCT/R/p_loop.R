@@ -8,6 +8,9 @@
 #' @param n A vector encoding the cluster sizes.
 #' @param pred The prediction algorithm used to impute potential outcomes. By default, this is \code{p_rf_interp}, which uses random forests and interpolates between methods \code{p_rf_ab} and \code{p_rf_s} that treat the pairs as units or treats the individuals as units when making predictions. Another option is \code{p_ols_interp}, which uses linear regression. User written imputation methods may be used as well.
 #' @param ... Arguments to be passed to the imputation method.
+#' @import dplyr 
+#' @import tidyr 
+#' @import stringr
 #' @export
 
 p_loop = function(Y,Tr,Z=NULL,P,n=NULL,pred = p_simple,...){
