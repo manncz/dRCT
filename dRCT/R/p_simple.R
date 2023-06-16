@@ -21,7 +21,7 @@ p_simple <- function(ordered, assigned, n_assigned, true_sum = NULL){
     loo_mean_sum <- mean((ordered$Y1[-i] + ordered$Y2[-i])/2)
     loo_mean_dif <- mean((ordered$Y1[-i] - ordered$Y2[-i])/2)
     
-    if(!isnull(true_sum)) loo_mean_sum = true_sum[i]
+    if(!is.null(true_sum)) loo_mean_sum = true_sum[i]
       
     v1[i] <- (n1[i] - n2[i])*loo_mean_sum + (n1[i] + n2[i])*loo_mean_dif
     v2[i] <- (n2[i] - n1[i])*loo_mean_sum + (n1[i] + n2[i])*loo_mean_dif
