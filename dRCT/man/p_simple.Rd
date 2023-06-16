@@ -4,7 +4,7 @@
 \alias{p_simple}
 \title{Simple Unbiased Estimator for Paired Clustered Randomized Trial}
 \usage{
-p_simple(ordered, assigned, n_assigned)
+p_simple(ordered, assigned, n_assigned, true_sum = NULL)
 }
 \arguments{
 \item{ordered}{A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.}
