@@ -5,6 +5,8 @@
 #' @param ordered A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.
 #' @param assigned A matrix of pair experimental data that his been processed by the \code{pair} function.
 #' @param n_assigned A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.
+#' @param loo A Boolean indicating whether leave-one-pair-out imputation should be used.
+#' @param weighted_imp A Boolean indicating whether weighted mean imputation should be used.
 #' @export
 
 p_simple <- function(ordered, assigned, n_assigned,
