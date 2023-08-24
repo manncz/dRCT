@@ -4,7 +4,16 @@
 \alias{p_loop}
 \title{P-LOOP Estimator}
 \usage{
-p_loop(Y, Tr, Z = NULL, P, n = NULL, pred = p_simple, ...)
+p_loop(
+  Y,
+  Tr,
+  Z = NULL,
+  P,
+  n = NULL,
+  pred = p_simple,
+  returnFitInfo = FALSE,
+  ...
+)
 }
 \arguments{
 \item{Y}{A vector of mean experimental outcomes for each unit.}

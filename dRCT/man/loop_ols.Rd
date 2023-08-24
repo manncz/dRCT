@@ -14,7 +14,7 @@ loop_ols(Y, Tr, Z)
 \item{Z}{A matrix of pre-treatment covariates.}
 }
 \description{
-This function is used to impute potential outcomes for the \code{loop} function. 
+This function is used to impute potential outcomes for the \code{loop} function.
 Leaves out each observation and imputes its potential outcomes using ordinary least squares
 regression on the remaining observations.
 }

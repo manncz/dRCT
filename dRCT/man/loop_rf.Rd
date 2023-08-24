@@ -16,7 +16,7 @@ loop_rf(Y, Tr, Z, dropobs = NULL)
 \item{dropobs}{When set to TRUE, lowers the bootstrap sample size in the random forest by 1 when making out-of-bag predictions. By default, this is set to TRUE if the sample size is less than or equal to 30 and FALSE otherwise.}
 }
 \description{
-This function is used to impute potential outcomes for the \code{loop} function. 
+This function is used to impute potential outcomes for the \code{loop} function.
 Fits random forests to the data and imputes the potential outcomes for each observation
 using the out-of-bag predictions.
 }
