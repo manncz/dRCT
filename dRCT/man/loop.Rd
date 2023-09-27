@@ -4,7 +4,7 @@
 \alias{loop}
 \title{LOOP Estimator}
 \usage{
-loop(Y, Tr, Z, pred = loop_rf, p = 0.5, ...)
+loop(Y, Tr, Z, pred = loop_rf, p = 0.5, returnFitInfo = FALSE, ...)
 }
 \arguments{
 \item{Y}{A vector of experimental outcomes.}

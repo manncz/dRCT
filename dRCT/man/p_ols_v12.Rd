@@ -14,7 +14,7 @@ p_ols_v12(ordered, assigned, n_assigned)
 \item{n_assigned}{A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.}
 }
 \description{
-This function is used to impute potential outcomes for the \code{p_loop} function. 
+This function is used to impute potential outcomes for the \code{p_loop} function.
 Leaves out each pair and imputes its potential outcomes using ordinary least squares
 regression on the remaining pairs. Pairs are treated as units when making predictions.
 }

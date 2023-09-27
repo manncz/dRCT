@@ -1,9 +1,9 @@
 #' OLS Imputation of Potential Outcomes
 #'
-#' This function is used to impute potential outcomes for the \code{loop} function. 
+#' This function is used to impute potential outcomes for the \code{loop} function.
 #' Leaves out each observation and imputes its potential outcomes using ordinary least squares
 #' regression on the remaining observations.
-#' 
+#'
 #' @param Y A vector of observed outcomes.
 #' @param Tr The treatment assignment vector.
 #' @param Z A matrix of pre-treatment covariates.
@@ -18,11 +18,13 @@ loop_ols = function(Y, Tr, Z){
   dm0 = as.matrix(model.matrix(~ . + Tr*., data = dat0))
   dm1 = as.matrix(model.matrix(~ . + Tr*., data = dat1))
   coefs = loo_ols(Y,dm)
-  
+  colnames(coefs) <- colnames(dm)
+
   chat = rowSums(coefs*dm0)
   that = rowSums(coefs*dm1)
   t_c = cbind(that,chat)
-  
+
+  attr(t_c,"coefs") <- coefs
+
   return(t_c)
 }
-
