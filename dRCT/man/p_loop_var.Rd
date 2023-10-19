@@ -13,8 +13,7 @@ p_loop_var(assigned, v1, v2, n_assigned)
 
 \item{v2}{A vector of the predicted treatment minus control differences for the pairs where the second unit is assigned to treatment.}
 
-\item{n_assigned}{A matrix of cluster sizes that has been processed by the \code{pair} function
-#' @export}
+\item{n_assigned}{A matrix of cluster sizes that has been processed by the \code{pair} function}
 }
 \description{
 This function implements the variance estimate for the P-LOOP estimator and is used within \code{p_loop}.

@@ -5,7 +5,7 @@
 #' @param v1 A vector of the predicted treatment minus control differences for the pairs where the first unit is assigned to treatment.
 #' @param v2 A vector of the predicted treatment minus control differences for the pairs where the second unit is assigned to treatment.
 #' @param n_assigned A matrix of cluster sizes that has been processed by the \code{pair} function
-#' #' @export
+#' @export
 
 p_loop_var = function(assigned,v1,v2,n_assigned){
   n1 = n_assigned$n1
