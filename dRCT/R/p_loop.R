@@ -53,8 +53,7 @@ p_loop = function(Y,Tr,Z=NULL,P,n=NULL,pred = p_simple,returnFitInfo=FALSE,...){
   out <- new_loopEst(
     c(tauhat=tauhat, varhat=varhat),
     call=match.call(),
-    pred=pred,
-    p=p)
+    pred=pred)
 
   if(returnFitInfo)
     attr(out,"fitInfo") <- attributes(v12)
