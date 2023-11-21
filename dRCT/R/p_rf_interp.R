@@ -16,10 +16,17 @@ p_rf_interp = function(ordered, assigned, n_assigned, reparm = TRUE){
   
   # observed v1 and v2
   Tr = assigned$Tr
-  v1 = (assigned$Y1*n_assigned$n1)[Tr == 1]-(assigned$Y2*n_assigned$n2)[Tr == 1]
-  v2 = (assigned$Y2*n_assigned$n2)[Tr == 0]-(assigned$Y1*n_assigned$n1)[Tr == 0]
+  v = rep(0, length(Tr))
+  v[Tr == 1] = (assigned$Y1*n_assigned$n1)[Tr == 1]-(assigned$Y2*n_assigned$n2)[Tr == 1]
+  v[Tr == 0] = (assigned$Y2*n_assigned$n2)[Tr == 0]-(assigned$Y1*n_assigned$n1)[Tr == 0]
   
   # interpolation
-  v12 = p_interp(Tr,v1,v2,pred1,pred2)$v12
+  interpolation = p_interp(Tr,vobs=v,pred1,pred2)
+  v12 = interpolation$v12
+  
+  attr(v12,"fitInfo") <- list(v12_info=attributes(pred1),
+                              po_info=attributes(pred2),
+                              alpha=interpolation$alpha)
+  
   return(v12)
 }

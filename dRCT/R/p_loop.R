@@ -37,7 +37,7 @@ p_loop = function(Y,Tr,Z=NULL,P,n=NULL,pred = p_simple,returnFitInfo=FALSE,...){
   assigned = pair_out$agg
   n_assigned = pair_out$n_assigned
 
-  # interpolate v1 and v2
+  # impute v1 and v2
   v12 = pred(ordered, assigned=assigned, n_assigned=n_assigned, ...)
   v1= v12$v1
   v2= v12$v2
