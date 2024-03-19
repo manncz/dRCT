@@ -4,7 +4,7 @@
 \alias{p_rf_po}
 \title{Random Forest Imputation of Potential Outcomes in Paired Experiments}
 \usage{
-p_rf_po(ordered, assigned, n_assigned)
+p_rf_po(ordered, assigned, n_assigned, weighted_imp = F)
 }
 \arguments{
 \item{ordered}{A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.}

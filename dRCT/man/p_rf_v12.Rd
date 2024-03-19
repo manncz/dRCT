@@ -4,7 +4,7 @@
 \alias{p_rf_v12}
 \title{Random Forest Imputation of Potential Outcomes in Paired Experiments}
 \usage{
-p_rf_v12(ordered, assigned, n_assigned, reparm = TRUE)
+p_rf_v12(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F)
 }
 \arguments{
 \item{ordered}{A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.}
@@ -14,6 +14,8 @@ p_rf_v12(ordered, assigned, n_assigned, reparm = TRUE)
 \item{n_assigned}{A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.}
 
 \item{reparm}{If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate.}
+
+\item{weighted_imp}{A Boolean indicating whether to weight imputation models}
 }
 \description{
 This function is used to impute potential outcomes for the \code{p_loop} function. 

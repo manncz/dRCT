@@ -37,7 +37,7 @@ pair = function(Y,Tr,Z,P,n){
     select(P, starts_with("n"))
   
   out = agg %>%
-    select(!starts_with("n"), -Tr2) %>%
+    select(-Tr2) %>%
     rename(Tr = Tr1)%>%
     ungroup()
   
@@ -51,7 +51,6 @@ pair = function(Y,Tr,Z,P,n){
                 names_glue = "{.value}{label}") 
   
   ordered = reorder %>%
-    select(!starts_with("n")) %>%
     select(!contains("Tr")) %>%
     ungroup()
   

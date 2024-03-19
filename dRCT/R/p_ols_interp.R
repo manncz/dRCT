@@ -8,10 +8,10 @@
 #' @param n_assigned A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.
 #' @export
 
-p_ols_interp = function(ordered, assigned, n_assigned){
+p_ols_interp = function(ordered, assigned, n_assigned, weighted_imp = F){
   # two different predictions of v1 and v2
-  pred1 = p_ols_v12(ordered, assigned, n_assigned)
-  pred2 = p_ols_po(ordered, assigned, n_assigned)
+  pred1 = p_ols_v12(ordered, assigned, n_assigned, weighted_imp)
+  pred2 = p_ols_po(ordered, assigned, n_assigned, weighted_imp)
 
   # observed v1 and v2
   Tr = assigned$Tr

@@ -6,9 +6,10 @@
 #' @param ordered A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.
 #' @param assigned A matrix of pair experimental data that his been processed by the \code{pair} function.
 #' @param n_assigned A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.
+#' @param weighted_imp A Boolean indicating whether to weight imputation models
 #' @export
 
-p_ols_v12 = function(ordered, assigned, n_assigned){
+p_ols_v12 = function(ordered, assigned, n_assigned, weighted_imp = F){
 
   #set up observed data for estimating v1 and v2
   obs_v1 = assigned
@@ -32,11 +33,18 @@ p_ols_v12 = function(ordered, assigned, n_assigned){
   dif_var = which(colnames(mod_dat) == "dif")
   sum_var = which(colnames(mod_dat) == "sum")
 
-  coefs_sum <- coefs_dif <- matrix(nrow=M,ncol=ncol(mod_dat)-1)
+  coefs_sum <- coefs_dif <- matrix(nrow=M,ncol=ncol(mod_dat)-3)
 
   for(i in 1:M){
-    ols_sum = lm(sum ~ . , mod_dat[-i,-dif_var])
-    ols_dif = lm(dif ~ . , mod_dat[-i,-sum_var])
+    
+    if(weighted_imp){
+      ols_sum = lm(sum ~ . -n1 -n2, mod_dat[-i,-dif_var], weights = n1+n2)
+      ols_dif = lm(dif ~ . -n1 -n2, mod_dat[-i,-sum_var], weights = n1+n2)
+    }else{
+      ols_sum = lm(sum ~ . -n1 -n2, mod_dat[-i,-dif_var])
+      ols_dif = lm(dif ~ . -n1 -n2, mod_dat[-i,-sum_var])
+    }
+    
     coefs_sum[i,] <- coef(ols_sum)
     coefs_dif[i,] <- coef(ols_dif)
 

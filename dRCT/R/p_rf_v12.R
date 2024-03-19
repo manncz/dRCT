@@ -7,9 +7,10 @@
 #' @param assigned A matrix of pair experimental data that his been processed by the \code{pair} function.
 #' @param n_assigned A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.
 #' @param reparm If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate.
+#' @param weighted_imp A Boolean indicating whether to weight imputation models
 #' @export
 
-p_rf_v12 = function(ordered, assigned, n_assigned, reparm = TRUE){
+p_rf_v12 = function(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F){
   
   if(reparm == TRUE){
     obs_v1 = reparam(assigned)
@@ -39,9 +40,16 @@ p_rf_v12 = function(ordered, assigned, n_assigned, reparm = TRUE){
   sum_var = which(colnames(mod_dat) == "sum")
   
   for(i in 1:M){
-    rf_sum = randomForest::randomForest(sum ~ . , mod_dat[-i,-dif_var])
-    rf_dif = randomForest::randomForest(dif ~ . , mod_dat[-i,-sum_var])
-    
+    if(weighted_imp){
+      w = mod_dat[-i,]$n1 + mod_dat[-i,]$n2
+      
+      rf_sum = randomForest::randomForest(sum ~ . -n1 -n2, mod_dat[-i,-dif_var], weights = w)
+      rf_dif = randomForest::randomForest(dif ~ . -n1 -n2, mod_dat[-i,-sum_var], weights = w)
+    }else{
+      rf_sum = randomForest::randomForest(sum ~ . -n1 -n2, mod_dat[-i,-dif_var])
+      rf_dif = randomForest::randomForest(dif ~ . -n1 -n2, mod_dat[-i,-sum_var])
+    }
+   
     v1[i] = (n1[i] - n2[i])/2*predict(rf_sum,obs_v1[i,]) + (n1[i] + n2[i])/2*predict(rf_dif,obs_v1[i,])
     v2[i] = (n2[i] - n1[i])/2*predict(rf_sum,obs_v2[i,]) + (n2[i] + n1[i])/2*predict(rf_dif,obs_v2[i,])
   }

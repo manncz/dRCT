@@ -9,10 +9,10 @@
 #' @param reparm If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate.
 #' @export
 
-p_rf_interp = function(ordered, assigned, n_assigned, reparm = TRUE){
+p_rf_interp = function(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F){
   # two different predictions of v1 and v2
-  pred1 = p_rf_v12(ordered, assigned, n_assigned, reparm)
-  pred2 = p_rf_po(ordered, assigned, n_assigned)
+  pred1 = p_rf_v12(ordered, assigned, n_assigned, reparm, weighted_imp)
+  pred2 = p_rf_po(ordered, assigned, n_assigned, weighted_imp)
   
   # observed v1 and v2
   Tr = assigned$Tr

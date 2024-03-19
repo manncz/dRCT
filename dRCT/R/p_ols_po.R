@@ -6,9 +6,10 @@
 #' @param ordered A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.
 #' @param assigned A matrix of pair experimental data that his been processed by the \code{pair} function.
 #' @param n_assigned A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.
+#' @param weighted_imp A Boolean indicating whether to weight imputation models
 #' @export
 
-p_ols_po = function(ordered, assigned, n_assigned){
+p_ols_po = function(ordered, assigned, n_assigned, weighted_imp = F){
 
   dat1 = ordered %>% select(ends_with("1"))
   dat0 = ordered %>% select(ends_with("2"))
@@ -25,11 +26,17 @@ p_ols_po = function(ordered, assigned, n_assigned){
 
   M = nrow(ordered)
   v1 = v2 = rep(0,M)
-  coefs1 <- coefs0 <- matrix(nrow=M,ncol=ncol(dat1))
+  coefs1 <- coefs0 <- matrix(nrow=M,ncol=ncol(dat1)-1)
+  
   for(i in 1:M){
-    lm1 = lm(Y ~ ., dat1[-i,]) # treatment model
-    lm0 = lm(Y ~ ., dat0[-i,]) # control model
-
+    if(weighted_imp){
+      lm1 = lm(Y ~ . -n, dat1[-i,], weights = n) # treatment model
+      lm0 = lm(Y ~ . -n, dat0[-i,], weights = n) # control model
+    }else{
+      lm1 = lm(Y ~ . -n, dat1[-i,]) # treatment model
+      lm0 = lm(Y ~ . -n, dat0[-i,]) # control model
+    }
+   
     that1 = predict(lm1,obs1[i,])
     chat1 = predict(lm0,obs1[i,])
     that2 = predict(lm1,obs2[i,])
