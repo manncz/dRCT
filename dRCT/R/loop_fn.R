@@ -49,8 +49,12 @@ loop = function(Y, Tr, Z,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...) {
   M_c = sum((chat[Tr==0]-Y[Tr==0])^2)/n_c
   varhat = 1/(n_t+n_c)*((1-p)/p*M_t + p/(1-p)*M_c + 2*sqrt(M_t*M_c))
 
+  ## this is what t.test() uses (more or less)
+  df=varhat^2/(M_t^2/n_t^2/(n_t-1)+M_c^2/n_c^2/(n_c-1))
+
   out <- new_loopEst(
     c(tauhat, varhat),
+    df=df,
     call=match.call(),
     pred=pred,
     p=p)
