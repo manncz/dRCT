@@ -17,8 +17,8 @@ loop_rf = function(Y, Tr, Z, dropobs = NULL) {
     dropobs = ifelse(length(Y) > 30, FALSE, TRUE)
   }
 
-  forest1 = randomForest::randomForest(Z[Tr==1,,drop=FALSE], Y[Tr==1,,drop=FALSE])
-  forest0 = randomForest::randomForest(Z[Tr==0,,drop=FALSE], Y[Tr==0,,drop=FALSE])
+  forest1 = suppressWarnings(randomForest::randomForest(Z[Tr==1,,drop=FALSE], Y[Tr==1,,drop=FALSE]))
+  forest0 = suppressWarnings(randomForest::randomForest(Z[Tr==0,,drop=FALSE], Y[Tr==0,,drop=FALSE]))
   that = chat = rep(0, length(Y))
   that[Tr==0] = predict(forest1, Z[Tr==0,,drop=FALSE])
   chat[Tr==1] = predict(forest0, Z[Tr==1,,drop=FALSE])
@@ -28,10 +28,10 @@ loop_rf = function(Y, Tr, Z, dropobs = NULL) {
     that[Tr==1] = predict(forest1)
     chat[Tr==0] = predict(forest0)
   } else {
-    forest1a = randomForest::randomForest(Z[Tr==1,,drop=FALSE], Y[Tr==1,,drop=FALSE],
-                                          sampsize = length(Y[Tr==1])-1)
-    forest0a = randomForest::randomForest(Z[Tr==0,,drop=FALSE], Y[Tr==0,,drop=FALSE],
-                                          sampsize = length(Y[Tr==0])-1)
+    forest1a = suppressWarnings(randomForest::randomForest(Z[Tr==1,,drop=FALSE], Y[Tr==1,,drop=FALSE],
+                                          sampsize = length(Y[Tr==1])-1))
+    forest0a = suppressWarnings(randomForest::randomForest(Z[Tr==0,,drop=FALSE], Y[Tr==0,,drop=FALSE],
+                                          sampsize = length(Y[Tr==0])-1))
     that[Tr==1] = predict(forest1a)
     chat[Tr==0] = predict(forest0a)
 
