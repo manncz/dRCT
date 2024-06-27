@@ -41,7 +41,7 @@ print.loopEst <- function(x,digits=max(3L,getOption('digits')),
   rownames(coefs) <- "ATE:"
   colnames(coefs) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
 
-  stats::printCoefmat(coef,digits=digits, signif.stars = signif.stars)
+  stats::printCoefmat(coefs,digits=digits, signif.stars = signif.stars)
 
   invisible(x)
 }
