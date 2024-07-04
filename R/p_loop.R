@@ -22,6 +22,8 @@ p_loop = function(Y,Tr,Z=NULL,P,n=NULL,pred = p_simple,returnFitInfo=FALSE,...){
     Z = rep(1, length(Y))
     #message("Note: unadjusted estimator is automatically used (pred = p_simple) because no covariates were provided")
     pred = p_simple
+  } else{
+    if(is.data.frame(Z)) Z=model.matrix(~.,data=Z)[,-1]
   }
 
   Z <- as.matrix(Z)

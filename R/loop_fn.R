@@ -32,11 +32,15 @@
 #' print(c("loop ols",loopols.results))
 #' print(c("Difference in Means",meandiff,varhat))
 
-loop = function(Y, Tr, Z,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...) {
+loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...) {
   Y = as.matrix(Y)
-  Z = as.matrix(Z)
-
-  t_c = pred(Y,Tr,Z,...)
+  if(is.null(Z)){
+    t_c = loop_mean(Y,Tr,...)
+  } else{
+    if(is.data.frame(Z)) Z=model.matrix(~.,data=Z)[,-1]
+    Z=as.matrix(Z)
+    t_c = pred(Y,Tr,Z,...)
+  }
   that = t_c[,1]
   chat = t_c[,2]
 
