@@ -16,8 +16,8 @@ reloop(Y, Tr, Z, yhat)
 \item{yhat}{A vector of external predictions.}
 }
 \description{
-This function implements the ReLOOP method for imputing potential outcomes within the \code{loop} function. 
-This method uses both covariates \code{Z} and external predictions \code{yhat} to impute potential outcomes, 
+This function implements the ReLOOP method for imputing potential outcomes within the \code{loop} function.
+This method uses both covariates \code{Z} and external predictions \code{yhat} to impute potential outcomes,
 which can then be used within the LOOP estimator to obtain an estimate for the average treatment effect.
 As implemented, \code{reloop} is very slightly biased. \code{reloop_slow} removes that bias at the cost of
 computation time.

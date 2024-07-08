@@ -4,7 +4,7 @@
 \alias{confint.loopEst}
 \title{Confidence interval for LOOP estimate}
 \usage{
-\method{confint}{loopEst}(x, level = 0.95, alpha = 1 - level, df = Inf, ...)
+\method{confint}{loopEst}(x, level = 0.95, alpha = 1 - level, ...)
 }
 \arguments{
 \item{x}{LOOP estimate}

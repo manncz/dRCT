@@ -1,4 +1,4 @@
-#' Random Forest Imputation of Potential Outcomes in Paired Experiments
+#' Random Forest Imputation of Potential Outcomes in Paired Experiments (Interpolated)
 #'
 #' This function is used to impute potential outcomes for the \code{p_loop} function. 
 #' Leaves out each pair and imputes its potential outcomes using random forests
@@ -7,6 +7,7 @@
 #' @param assigned A matrix of pair experimental data that his been processed by the \code{pair} function.
 #' @param n_assigned A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.
 #' @param reparm If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate.
+#' @param weighted_imp If set to \code{TRUE}, cluster sizes will be used as weights in imputation models.
 #' @export
 
 p_rf_interp = function(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F){
