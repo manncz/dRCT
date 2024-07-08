@@ -1,16 +1,17 @@
-#' Simple Unbiased Estimator for Paired Clustered Randomized Trial
+#' Leave-One-Out Mean Imputation of Potential Outcomes in Paired Experiments
 #'
 #' This function is used to impute potential outcomes for the \code{p_loop} function. Pairs are treated
-#' as the unit, and leave one out mean imputation is used, with no covariate adjustment.
+#' as the unit. This function used with \code{p_loop} implements the LOO-MI estimator when \code{loo} is set to \code{TRUE} (the default).
+#' If \code{loo} is set to \code{FALSE} and  \code{weighted_imp} is set to \code{TRUE}, (or all of the cluster sizes are the same),
+#' then the point estimator returned by \code{p_loop} is equivalent to the difference in means estimator.
 #' @param ordered A matrix of pair experimental data that his been processed by the \code{pair} function, with the treatment pair first.
 #' @param assigned A matrix of pair experimental data that his been processed by the \code{pair} function.
 #' @param n_assigned A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.
-#' @param loo A Boolean indicating whether leave-one-pair-out imputation should be used.
-#' @param weighted_imp A Boolean indicating whether weighted mean imputation should be used.
+#' @param loo If set to \code{TRUE}, leave-one-pair-out imputation should be used.
+#' @param weighted_imp If set to \code{TRUE}, cluster sizes will be used as weights in imputation models.
 #' @export
 
-p_simple <- function(ordered, assigned, n_assigned,
-                     loo = T, weighted_imp = F, true_sum = NULL){
+p_loomi <- function(ordered, assigned, n_assigned, loo = TRUE, weighted_imp = FALSE){
   
   M <- nrow(assigned)
   v1 <- v2 <- rep(NA, M)
@@ -21,15 +22,16 @@ p_simple <- function(ordered, assigned, n_assigned,
   nt <- n1*assigned$Tr + n2*(1-assigned$Tr)
   nc <- n1*(1-assigned$Tr) + n2*assigned$Tr
   
-  mean_sum1 = mean_sum2 <- mean((ordered$Y1 + ordered$Y2)/2)
-  mean_dif1 = mean_dif2 <- mean((ordered$Y1 - ordered$Y2)/2)
-  
-  # this returns the hajek estimator
-  if(weighted_imp){
-    mean_sum1 = mean_sum2 <- (sum(ordered$Y1*nt)/sum(nt) + sum(ordered$Y2*nc)/sum(nc))/2
-    mean_dif1 = mean_dif2 <- (sum(ordered$Y1*nt)/sum(nt) - sum(ordered$Y2*nc)/sum(nc))/2
+  if(!loo){
+    if(weighted_imp){
+      mean_sum1 = mean_sum2 <- (sum(ordered$Y1*nt)/sum(nt) + sum(ordered$Y2*nc)/sum(nc))/2
+      mean_dif1 = mean_dif2 <- (sum(ordered$Y1*nt)/sum(nt) - sum(ordered$Y2*nc)/sum(nc))/2
+    }else{
+      mean_sum1 = mean_sum2 <- mean((ordered$Y1 + ordered$Y2)/2)
+      mean_dif1 = mean_dif2 <- mean((ordered$Y1 - ordered$Y2)/2)
+    }
   }
-  
+    
   for(i in 1:M){
     
     if(loo){
@@ -40,11 +42,6 @@ p_simple <- function(ordered, assigned, n_assigned,
         mean_sum1 = mean_sum2 <- mean((ordered$Y1[-i] + ordered$Y2[-i])/2)
         mean_dif1 = mean_dif2 <- mean((ordered$Y1[-i] - ordered$Y2[-i])/2)
       }
-    }
-    
-    if(!is.null(true_sum)){
-      mean_sum1 = true_sum[i,1]
-      mean_sum2 = true_sum[i,2]
     }
     
     v1[i] <- (n1[i] - n2[i])*mean_sum1 + (n1[i] + n2[i])*mean_dif1

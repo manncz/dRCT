@@ -2,7 +2,7 @@
 % Please edit documentation in R/p_rf_po.R
 \name{p_rf_po}
 \alias{p_rf_po}
-\title{Random Forest Imputation of Potential Outcomes in Paired Experiments}
+\title{Random Forest Imputation of Potential Outcomes in Paired Experiments (Individuals as Units)}
 \usage{
 p_rf_po(ordered, assigned, n_assigned, weighted_imp = F)
 }
@@ -12,6 +12,8 @@ p_rf_po(ordered, assigned, n_assigned, weighted_imp = F)
 \item{assigned}{A matrix of pair experimental data that his been processed by the \code{pair} function.}
 
 \item{n_assigned}{A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.}
+
+\item{weighted_imp}{If set to \code{TRUE}, cluster sizes will be used as weights in imputation models.}
 }
 \description{
 This function is used to impute potential outcomes for the \code{p_loop} function. 

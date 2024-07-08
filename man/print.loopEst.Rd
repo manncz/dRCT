@@ -4,7 +4,12 @@
 \alias{print.loopEst}
 \title{Print loopEst object}
 \usage{
-\method{print}{loopEst}(x, digits = max(3L, getOption("digits")), ...)
+\method{print}{loopEst}(
+  x,
+  digits = max(3L, getOption("digits")),
+  signif.stars = getOption("show.signif.stars"),
+  ...
+)
 }
 \arguments{
 \item{x}{loopEst object}

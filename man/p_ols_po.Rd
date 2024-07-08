@@ -2,7 +2,7 @@
 % Please edit documentation in R/p_ols_po.R
 \name{p_ols_po}
 \alias{p_ols_po}
-\title{OLS Imputation of Potential Outcomes in Paired Experiments}
+\title{OLS Imputation of Potential Outcomes in Paired Experiments (Individuals as Units)}
 \usage{
 p_ols_po(ordered, assigned, n_assigned, weighted_imp = F)
 }
@@ -13,7 +13,7 @@ p_ols_po(ordered, assigned, n_assigned, weighted_imp = F)
 
 \item{n_assigned}{A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.}
 
-\item{weighted_imp}{A Boolean indicating whether to weight imputation models}
+\item{weighted_imp}{If set to \code{TRUE}, cluster sizes will be used as weights in imputation models.}
 }
 \description{
 This function is used to impute potential outcomes for the \code{p_loop} function.

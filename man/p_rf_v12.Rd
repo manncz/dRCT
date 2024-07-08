@@ -2,7 +2,7 @@
 % Please edit documentation in R/p_rf_v12.R
 \name{p_rf_v12}
 \alias{p_rf_v12}
-\title{Random Forest Imputation of Potential Outcomes in Paired Experiments}
+\title{Random Forest Imputation of Potential Outcomes in Paired Experiments (Pairs as Units)}
 \usage{
 p_rf_v12(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F)
 }
@@ -15,7 +15,7 @@ p_rf_v12(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F)
 
 \item{reparm}{If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate.}
 
-\item{weighted_imp}{A Boolean indicating whether to weight imputation models}
+\item{weighted_imp}{If set to \code{TRUE}, cluster sizes will be used as weights in imputation models.}
 }
 \description{
 This function is used to impute potential outcomes for the \code{p_loop} function. 

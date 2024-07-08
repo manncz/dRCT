@@ -2,7 +2,7 @@
 % Please edit documentation in R/p_rf_interp.R
 \name{p_rf_interp}
 \alias{p_rf_interp}
-\title{Random Forest Imputation of Potential Outcomes in Paired Experiments}
+\title{Random Forest Imputation of Potential Outcomes in Paired Experiments (Interpolated)}
 \usage{
 p_rf_interp(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F)
 }
@@ -14,6 +14,8 @@ p_rf_interp(ordered, assigned, n_assigned, reparm = TRUE, weighted_imp = F)
 \item{n_assigned}{A matrix of pair experimental data cluster sizes that has been processed by the \code{pair} function.}
 
 \item{reparm}{If set to \code{TRUE}, covariates will be parameterized as the pairwise differences and means for each covariate.}
+
+\item{weighted_imp}{If set to \code{TRUE}, cluster sizes will be used as weights in imputation models.}
 }
 \description{
 This function is used to impute potential outcomes for the \code{p_loop} function. 
