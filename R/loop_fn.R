@@ -6,7 +6,17 @@
 #' @param Z A matrix or vector of covariates.
 #' @param pred The prediction algorithm used to impute potential outcomes. By default, this is \code{loop_rf}, which uses random forests. Other options include \code{loop_ols} (which uses linear regression) and \code{reloop} (which can incorporate external predictions \code{yhat} to improve precision). As implemented, \code{reloop} is very slightly biased -- if bias is a concern, \code{reloop_slow} can be used instead. User written imputation methods may be used as well.
 #' @param p The probability of being assigned to treatment. Defaults to 0.5.
+#' @param returnFitInfo If set to TRUE, includes results or fitted model objects from the algorithm specified in \code{pred}, as an attribute called \code{fitInfo}
 #' @param ... Arguments to be passed to the imputation method. For example, \code{loop_rf} takes the argument \code{dropobs}: when set to TRUE, lowers the bootstrap sample size in the random forest by 1 when making out-of-bag predictions. By default, this is set to TRUE if the sample size is less than or equal to 30 and FALSE otherwise. For \code{reloop} and \code{reloop_slow}, external predictions \code{yhat} must be specified. This is a vector of predictions of the outcome for each participant that is obtained using an external data source.
+#' @return An object of the class \code{loopEst} which is a numeric vector with two components: the estimated average treatment effect and the estimated sampling variance. It also includes the following attributes:
+#'
+#' * \code{df} The estimated degrees of freedom for confidence intervals and hypothesis tests
+#' * \code{call} The function call
+#' * \code{pred} The prediction algorithm used
+#' * \code{p} The probability of being assigned to the treatment condition
+#' * \code{ITE} A vector of unbiased individual treatment effect estimates
+#' * If \code{returnFitInfo=TRUE} information from the \code{pred} algorithm
+#'
 #' @importFrom stats predict
 #' @export
 #' @examples
@@ -45,7 +55,8 @@ loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...)
   chat = t_c[,2]
 
   mhat = (1-p)*that + p*chat
-  tauhat = mean((1/p)*(Y-mhat)*Tr-(1/(1-p))*(Y-mhat)*(1-Tr))
+  ITE = (1/p)*(Y-mhat)*Tr-(1/(1-p))*(Y-mhat)*(1-Tr)
+  tauhat = mean(ITE)
 
   n_t = length(mhat[Tr == 1])
   n_c = length(mhat[Tr == 0])
@@ -61,7 +72,8 @@ loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...)
     df=df,
     call=match.call(),
     pred=pred,
-    p=p)
+    p=p,
+    ITE=ITE)
 
   if(returnFitInfo)
     attr(out,"fitInfo") <- attributes(t_c)
