@@ -18,6 +18,7 @@ reloop = function(Y,Tr,Z,yhat){
   # RF with external predictions/covariates
   if('yhat'%in%colnames(Z))
     warning("Replacing yhat in Z with provided yhat")
+  colnames(Z) <- paste0("Z", 1:(ncol(Z)))
   Z <- cbind(Z,as.matrix(yhat))
   colnames(Z)[ncol(Z)] <- "yhat"
   tc.RF = loop_rf(Y,Tr,Z)

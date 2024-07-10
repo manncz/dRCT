@@ -17,7 +17,19 @@ loop(Y, Tr, Z = NULL, pred = loop_rf, p = 0.5, returnFitInfo = FALSE, ...)
 
 \item{p}{The probability of being assigned to treatment. Defaults to 0.5.}
 
+\item{returnFitInfo}{If set to TRUE, includes results or fitted model objects from the algorithm specified in \code{pred}, as an attribute called \code{fitInfo}}
+
 \item{...}{Arguments to be passed to the imputation method. For example, \code{loop_rf} takes the argument \code{dropobs}: when set to TRUE, lowers the bootstrap sample size in the random forest by 1 when making out-of-bag predictions. By default, this is set to TRUE if the sample size is less than or equal to 30 and FALSE otherwise. For \code{reloop} and \code{reloop_slow}, external predictions \code{yhat} must be specified. This is a vector of predictions of the outcome for each participant that is obtained using an external data source.}
+}
+\value{
+An object of the class \code{loopEst} which is a numeric vector with two components: the estimated average treatment effect and the estimated sampling variance. It also includes the following attributes:
+
+* \code{df} The estimated degrees of freedom for confidence intervals and hypothesis tests
+* \code{call} The function call
+* \code{pred} The prediction algorithm used
+* \code{p} The probability of being assigned to the treatment condition
+* \code{ITE} A vector of unbiased individual treatment effect estimates
+* If \code{returnFitInfo=TRUE} information from the \code{pred} algorithm
 }
 \description{
 Covariate-adjusted estimator of the average treatment effect in randomized experiments. Given a set of experimental data (including observed outcome, treatment assignment, and covariates), uses a method \code{pred} to impute the potential outcomes for each observation, which are then used to estimate the average treatment effect.
