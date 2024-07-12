@@ -47,7 +47,7 @@ print.loopEst <- function(x,digits=max(3L,getOption('digits')),
 }
 
 #' @export
-is.loopEst <- function(x) inherits(x,"loopEstxo")
+is.loopEst <- function(x) inherits(x,"loopEst")
 
 
 #' Confidence interval for LOOP estimate
