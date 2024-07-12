@@ -2,6 +2,7 @@
 
 S3method(confint,loopEst)
 S3method(print,loopEst)
+export(getITE)
 export(interp)
 export(is.loopEst)
 export(loo_ols)
