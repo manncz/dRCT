@@ -47,8 +47,8 @@ loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...)
   if(is.null(Z)){
     t_c = loop_mean(Y,Tr,...)
   } else{
-    if(is.data.frame(Z)) Z=model.matrix(~.,data=Z)[,-1]
-    Z=as.matrix(Z)
+    #if(is.data.frame(Z)) Z=model.matrix(~.,data=Z)[,-1]
+    #Z=as.matrix(Z)
     t_c = pred(Y,Tr,Z,...)
   }
   that = t_c[,1]
