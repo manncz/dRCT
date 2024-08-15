@@ -42,7 +42,29 @@
 #' print(c("loop ols",loopols.results))
 #' print(c("Difference in Means",meandiff,varhat))
 
-loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...) {
+loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE,
+                paired=FALSE,P,data,...) {
+
+  if(is.numeric(Tr) & NCOL(Tr)==1 & all(Tr==1 | Tr==0))
+    return(loop.fit(Y=Y,Tr=TrVec(Tr),Z=Z,pred=pred,p=p,returnFitInfo=returnFitInfo,...))
+
+  TrList <- format_Tr(Tr)
+
+  if(length(TrList)==1)
+    return(loop.fit(Y=Y,Tr=TrList[[1]],Z=Z,pred=pred,p=p,returnFitInfo=returnFitInfo,...))
+
+  out <- loopList(
+    lapply(TrList,
+           function(tr){
+             ind <- attributes(tr)$ind
+             loop.fit(Y=Y[ind],Tr=tr,Z=Z[ind,],pred=pred,p=p,returnFitInfo=returnFitInfo)
+           })
+  )
+
+
+}
+
+loop.fit = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...) {
   Y = as.matrix(Y)
   if(is.null(Z)){
     t_c = loop_mean(Y,Tr,...)
@@ -69,6 +91,7 @@ loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...)
 
   out <- new_loopEst(
     c(tauhat, varhat),
+    contrast=makeContrast(Tr),
     df=df,
     call=match.call(),
     pred=pred,
@@ -79,4 +102,54 @@ loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...)
     attr(out,"fitInfo") <- attributes(t_c)
 
   return(out)
+}
+
+Tr_2levs <- function(Tr,ind=seq_along(Tr)){
+  if(is.factor(Tr)){
+      ctl <- min(levels(Tr))
+      trt <- max(levels(Tr))
+    }
+    ctl <- min(Tr)
+    trt <- max(Tr)
+
+    if(ctl==0 & trt==1)  return(TrVec(Tr,labels=c(ctl,trt),ind=ind))
+    return(TrVec(ifelse(Tr==ctl,0,1),labels=c(ctl,trt),ind=ind))
+  }
+
+
+format_Tr <- function(Tr){
+  if(any(is.na(Tr))) stop("NA values not allowed in Tr")
+
+  if(!is.numeric(Tr) & !is.factor(Tr) & !is.character(Tr))
+    stop("Tr must be numeric, factor, or logical")
+
+  if(is.matrix(Tr)){
+    if(ncol(Tr)==1) Tr <- Tr[,1]
+    else stop("Tr must be a vector")
+  }
+
+  levs <- unique(Tr)
+
+  lu <- length(levs)
+  if(lu==1) stop("Need at least 2 randomized conditions")
+  if(lu==2) return(list(Tr_2levs(Tr)))
+
+  if(lu> length(Tr)/2) stop("Too many randomized conditions relative to sample size")
+
+  out <- list()
+  for(cond1 in 1:(lu-1))
+    for(cond2 in (cond1+1):lu){
+      l1 <- levs[cond1]
+      l2 <- levs[cond2]
+      ind <- which(Tr==l1 | Tr==l2)
+      out[[paste0(l1,"_",l2)]] <- Tr_2levs(Tr[ind],ind=ind)
+    }
+  out
+}
+
+makeContrast <- function(Tr){
+  if(!is.TrVec(Tr)) return("Treatment vs Control")
+  labs <- attributes(Tr)$labels
+
+  paste(labs[2],"vs",labs[1])
 }

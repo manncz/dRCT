@@ -35,8 +35,8 @@ loop_rf = function(Y, Tr, Z, dropobs = NULL) {
     that[Tr==1] = predict(forest1a)
     chat[Tr==0] = predict(forest0a)
 
-    forests$forests1a=forests1a
-    forests$forests0a=forests0a
+    forests$forest1a=forest1a
+    forests$forest0a=forest0a
   }
 
   out <- cbind(that,chat)
