@@ -3,7 +3,7 @@
 #' Covariate-adjusted estimator of the average treatment effect in randomized experiments. Given a set of experimental data (including observed outcome, treatment assignment, and covariates), uses a method \code{pred} to impute the potential outcomes for each observation, which are then used to estimate the average treatment effect.
 #' @param Y A vector of experimental outcomes.
 #' @param Tr The treatment assignment vector.
-#' @param Z A matrix or vector of covariates.
+#' @param Z A dataframe, matrix, or vector of covariates.
 #' @param pred The prediction algorithm used to impute potential outcomes. By default, this is \code{loop_rf}, which uses random forests. Other options include \code{loop_ols} (which uses linear regression) and \code{reloop} (which can incorporate external predictions \code{yhat} to improve precision). As implemented, \code{reloop} is very slightly biased -- if bias is a concern, \code{reloop_slow} can be used instead. User written imputation methods may be used as well.
 #' @param p The probability of being assigned to treatment. Defaults to 0.5.
 #' @param returnFitInfo If set to TRUE, includes results or fitted model objects from the algorithm specified in \code{pred}, as an attribute called \code{fitInfo}
