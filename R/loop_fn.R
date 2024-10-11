@@ -41,9 +41,11 @@
 #' print(c("loop rf",looprf.results))
 #' print(c("loop ols",loopols.results))
 #' print(c("Difference in Means",meandiff,varhat))
+#'
+#'
 
-loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE,
-                paired=FALSE,P,data,...) {
+loop.default = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE,
+               P,data,...) {
 
   if(is.numeric(Tr) & NCOL(Tr)==1 & all(Tr==1 | Tr==0))
     return(loop.fit(Y=Y,Tr=TrVec(Tr),Z=Z,pred=pred,p=p,returnFitInfo=returnFitInfo,...))
@@ -60,9 +62,48 @@ loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE,
              loop.fit(Y=Y[ind],Tr=tr,Z=Z[ind,],pred=pred,p=p,returnFitInfo=returnFitInfo)
            })
   )
-
-
 }
+
+#' @export
+#'
+loop <- function(x,...){
+  UseMethod("loop")
+}
+
+loop.formula <- function(formula,covariates,pair,data,...){
+  if(missing(data)) stop("Formula provided without data.")
+
+  mf=model.frame(formula=formula,data=data,na.action=na.fail)
+  if(ncol(mf)>2) stop("Formula should be of the form ",format(outcome~treatment)," including only two variables, the treatment indicator and the response/outcome")
+
+  Y=model.response(mf)
+  Tr=mf[,2]
+
+  if(missing(covariates)) covariates <- NULL
+  if(missing(pair)) pair <- NULL
+
+  if(!is.null(covariates)){
+    if(inherits(covariates, "formula")){
+      covariates <- model.frame(covariates,data)
+    } else if(is.vector(covariates)){
+      covariates <- data[,covariates]
+    }
+  } else if(is.matrix(covariates)|is.data.frame(covariates)){
+    stopifnot(nrow(covariates)==nrow(data))
+  }
+
+  if(!is.null(pair)){
+    if(inherits(pair, "formula")){
+      if(length(pair)>2) stop("Pair formula must be one-sided with a single pair-identifier, e.g. ", format(~P))
+      pair <- model.frame(pair,data)
+    } else if(length(pair)==1 & (is.integer(pair)|is.character(pair))){
+      pair <- data[,pair]
+    }
+  }
+
+  loop.default(Y=Y,Tr=Tr,Z=covariates,P=pair)
+}
+
 
 loop.fit = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...) {
   Y = as.matrix(Y)
@@ -108,10 +149,10 @@ Tr_2levs <- function(Tr,ind=seq_along(Tr)){
   if(is.factor(Tr)){
       ctl <- min(levels(Tr))
       trt <- max(levels(Tr))
+    } else{
+      ctl <- min(Tr)
+      trt <- max(Tr)
     }
-    ctl <- min(Tr)
-    trt <- max(Tr)
-
     if(ctl==0 & trt==1)  return(TrVec(Tr,labels=c(ctl,trt),ind=ind))
     return(TrVec(ifelse(Tr==ctl,0,1),labels=c(ctl,trt),ind=ind))
   }
