@@ -45,6 +45,7 @@
 loop = function(Y, Tr, Z=NULL,pred = loop_rf, p = 0.5, returnFitInfo=FALSE, ...) {
   Y = as.matrix(Y)
   if(is.null(Z)){
+    message("No covariates provided, so defaulting to `loop_mean` method.")
     t_c = loop_mean(Y,Tr,...)
   } else{
     #if(is.data.frame(Z)) Z=model.matrix(~.,data=Z)[,-1]
