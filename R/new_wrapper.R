@@ -13,7 +13,6 @@
 #' @return Function should send the given data into either p_loop or loop functions depending on type of data provided (Bernoulli, paired, or cluster).
 
 
-
 wrapper_formula <- function(formula1 = Y ~ Tr, formula2 = NULL, df, 
                             clust = NULL,
                             n = NULL,
