@@ -10,8 +10,14 @@
 #' @export
 
 pair = function(Y,Tr,Z,P,n){
+
   
-  data = data.frame(Y,Tr,Z,n,P) %>%
+  data = data.frame(Y=unname(Y),
+                    Tr=unname(Tr),
+                    Z=Z,
+                    n=unname(n),
+                    P=unname(P)
+                   ) %>%
     group_by(P) %>%
     mutate(nP = n(),
            drop = is.na(P) | nP != 2)
