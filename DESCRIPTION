@@ -1,11 +1,12 @@
 Package: dRCT
 Title: Design-Based Covariate Adjustment for the Average Treatment Effect
 Version: 1.0.0
-Description: Covariate-adjusted estimators of the average treatment effect in Bernoulli, pair, and paired cluster randomized experiments. Given a set of experimental data, uses a prediction algorithm to impute the potential outcomes for each observation, which are then used to estimate the average treatment effect. 
-Imports: randomForest, dplyr, tidyr, stringr
+Description: Covariate-adjusted estimators of the average treatment effect in Bernoulli, pair, and paired cluster randomized experiments. Given a set of experimental data, uses a prediction algorithm to impute the potential outcomes for each observation, which are then used to estimate the average treatment effect.
+Encoding: UTF-8
+Imports: randomForest, dplyr, tidyr, stringr, ranger
 Author: Edward Wu <jameswu@umich.edu>, Charlotte Mann <manncz@umich.edu>, Adam Sales <asale@wpi.edu>
 Maintainer: Charlotte Mann <manncz@umich.edu>, Adam Sales <asale@wpi.edu>
 Depends: R (>= 3.1.3)
 License: GPL
 LazyData: true
-RoxygenNote: 7.3.2
+Config/roxygen2/version: 8.0.0

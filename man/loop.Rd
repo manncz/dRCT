@@ -11,7 +11,7 @@ loop(Y, Tr, Z = NULL, pred = loop_rf, p = 0.5, returnFitInfo = FALSE, ...)
 
 \item{Tr}{The treatment assignment vector.}
 
-\item{Z}{A matrix or vector of covariates.}
+\item{Z}{A dataframe, matrix, or vector of covariates.}
 
 \item{pred}{The prediction algorithm used to impute potential outcomes. By default, this is \code{loop_rf}, which uses random forests. Other options include \code{loop_ols} (which uses linear regression) and \code{reloop} (which can incorporate external predictions \code{yhat} to improve precision). As implemented, \code{reloop} is very slightly biased -- if bias is a concern, \code{reloop_slow} can be used instead. User written imputation methods may be used as well.}
 
