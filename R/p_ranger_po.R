@@ -71,7 +71,11 @@ p_ranger_po <- function(ordered, assigned, n_assigned, weighted_imp=FALSE,
     v1 = (that1*ordered$n1 - chat2*ordered$n2)
     v2 = (that2*ordered$n2 - chat1*ordered$n1)
 
-    return(data.frame(v1,v2))
+    out <- data.frame(v1,v2)
+
+    attr(out,"forests") <- forests <- list(rfT=rfT,rfC=rfC)
+
+    return(out)
 }
 
 
